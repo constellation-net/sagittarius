@@ -1,0 +1,45 @@
+services:
+  lldap:
+    container_name: lldap-lldap
+    image: lldap/lldap:latest
+    ports:
+      - 389:3890
+    depends_on:
+      - postgres
+    environment:
+      LLDAP_LDAP_BASE_DN: ${BASE_DN}
+      LLDAP_HTTP_URL: ${APP_URL}
+      LLDAP_JWT_SECRET: ${JWT_SECRET}
+      LLDAP_KEY_SEED: ${KEY_SEED}
+      LLDAP_DATABASE_URL: postgres://${DB_USERNAME}:${DB_PASSWORD}@postgres:5432/${DB_DATABASE}
+      LLDAP_LDAP_USER_DN: ${ADMIN_USERNAME}
+      LLDAP_LDAP_USER_EMAIL: ${ADMIN_EMAIL}
+      LLDAP_LDAP_USER_PASS: ${ADMIN_PASSWORD}
+      LLDAP_FORCE_LDAP_USER_PASS_RESET: ${ADMIN_FORCE_PASSWORD_RESET}
+      LLDAP_SMTP_OPTIONS__ENABLE_PASSWORD_RESET: ${EMAIL_ENABLE_PASSWORD_RESET}
+      LLDAP_SMTP_OPTIONS__SERVER: ${EMAIL_HOST}
+      LLDAP_SMTP_OPTIONS__PORT: ${EMAIL_PORT}
+      LLDAP_SMTP_OPTIONS__SMTP_ENCRYPTION: ${EMAIL_ENCRYPTION}
+      LLDAP_SMTP_OPTIONS__USER: ${EMAIL_USERNAME}
+      LLDAP_SMTP_OPTIONS__PASSWORD: ${EMAIL_PASSWORD}
+      LLDAP_SMTP_OPTIONS__FROM: ${EMAIL_FROM}
+      LLDAP_SMTP_OPTIONS__REPLY_TO: ${EMAIL_REPLY_TO}
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.lldap.rule=Host(`users.starsystem.dev`)
+      - traefik.http.routers.lldap.middlewares=vpn-only@docker
+      - traefik.http.services.lldap.loadbalancer.server.port=17170
+    restart: always
+
+  postgres:
+    container_name: lldap-postgres
+    image: postgres:17
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    volumes:
+      - /mnt/storage-pool/databases/postgres/lldap:/var/lib/postgresql/data
+    labels:
+      - traefik.enable=false
+    restart: always
