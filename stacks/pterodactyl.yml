@@ -49,9 +49,13 @@ services:
       MYSQL_USER: ${DB_USERNAME}
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    labels:
+      - traefik.enable=false
     restart: always
   
   redis:
     container_name: redis
     image: redis:alpine
+    labels:
+      - traefik.enable=false
     restart: always
