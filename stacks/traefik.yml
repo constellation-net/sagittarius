@@ -17,7 +17,7 @@ services:
       - --certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL}
       - --certificatesresolvers.letsencrypt.acme.dnschallenge.provider=cloudflare
       - --certificatesresolvers.letsencrypt.acme.dnschallenge.resolvers=1.1.1.1,1.0.0.1
-      - --certificatesresolvers.letsencrypt.storage=/data/acme.json
+      - --certificatesresolvers.letsencrypt.acme.storage=/data/acme.json
       # Metrics
       - --metrics.addinternals=true
       - --metrics.prometheus.addEntryPointsLabels
