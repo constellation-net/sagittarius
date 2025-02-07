@@ -39,7 +39,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_DATABASE}
     volumes:
-      - /mnt/storage-pool/databases/postgres/lldap:/var/lib/postgresql/data
+      - /mnt/storage-pool/databases/postgresql/lldap:/var/lib/postgresql/data
     labels:
       - traefik.enable=false
     restart: always
