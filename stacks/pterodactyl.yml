@@ -1,0 +1,57 @@
+services:
+  panel:
+    container_name: panel
+    image: ghcr.io/pterodactyl/panel:latest
+    depends_on:
+      - redis
+      - mariadb
+    volumes:
+      - /mnt/storage-pool/apps/pterodactyl/var:/app/var/
+      - /mnt/storage-pool/apps/pterodactyl/logs:/app/storage/logs
+      - /mnt/storage-pool/apps/pterodactyl/nginx:/etc/nginx/http.d/
+    environment:
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: mariadb
+      DB_PORT: 3306
+      APP_ENV: production
+      APP_ENVIRONMENT_ONLY: false
+      APP_KEY: ${APP_KEY}
+      APP_URL: ${APP_URL}
+      APP_TIMEZONE: ${APP_TIMEZONE}
+      APP_SERVICE_AUTHOR: ${APP_SERVICE_AUTHOR}
+      CACHE_DRIVER: redis
+      SESSION_DRIVER: redis
+      QUEUE_DRIVER: redis
+      REDIS_HOST: redis
+      MAIL_FROM: ${MAIL_FROM}
+      MAIL_DRIVER: ${MAIL_DRIVER}
+      MAIL_HOST: ${MAIL_HOST}
+      MAIL_PORT: ${MAIL_PORT}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MAIL_ENCRYPTION: true
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.pterodactyl.rule=Host(`games.starsystem.dev`)
+      - traefik.http.routers.pterodactyl.entrypoints=websecure
+      - traefik.http.services.pterodactyl.loadbalancer.server.port=80
+    restart: always
+  
+  mariadb:
+    container_name: mariadb
+    image: mariadb:10.5
+    volumes:
+      - /mnt/storage-pool/databases/mariadb/pterodactyl:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    restart: always
+  
+  redis:
+    container_name: redis
+    image: redis:alpine
+    restart: always

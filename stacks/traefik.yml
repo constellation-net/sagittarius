@@ -1,0 +1,87 @@
+services:
+  traefik:
+    container_name: traefik
+    image: traefik:v3.1
+    ports:
+      - 80:80
+      - 443:443
+    command:
+      - --providers.docker
+      - --log.level=DEBUG
+      - --global.sendanonymoususage=false
+      # Ping & API
+      - --api.insecure=false
+      - --api.dashboard=true
+      - --ping.manualRouting=true
+      # ACME
+      - --certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL}
+      - --certificatesresolvers.letsencrypt.acme.dnschallenge.provider=cloudflare
+      - --certificatesresolvers.letsencrypt.acme.dnschallenge.resolvers=1.1.1.1,1.0.0.1
+      - --certificatesresolvers.letsencrypt.storage=/data/acme.json
+      # Metrics
+      - --metrics.addinternals=true
+      - --metrics.prometheus.addEntryPointsLabels
+      - --metrics.prometheus.addRoutersLabels
+      - --metrics.prometheus.addServicesLabels
+      - --metrics.prometheus.manualRouting=true
+      # Web entrypoint (port 80)
+      - --entrypoints.web.address=:80
+      - --entrypoints.web.forwardedheaders.insecure=false
+      - --entrypoints.web.forwardedheaders.trustedips=10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,fc00::/7
+      - --entrypoints.web.proxyprotocol.insecure=false
+      - --entrypoints.web.proxyprotocol.trustedips=10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,fc00::/7
+      # Redirects HTTP requests to HTTPS
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
+      # Websecure entrypoint (port 443)
+      - --entrypoints.websecure.address=:443
+      - --entrypoints.websecure.http.middlewares=cors@docker
+      - --entrypoints.websecure.http.tls.certresolver=letsencrypt
+      - --entrypoints.websecure.http.tls.domains[0].main=starsystem.dev
+      - --entrypoints.websecure.http.tls.domains[0].sans=*.starsystem.dev
+      - --entrypoints.websecure.forwardedheaders.insecure=false
+      - --entrypoints.websecure.forwardedheaders.trustedips=10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,fc00::/7
+      - --entrypoints.websecure.proxyprotocol.insecure=false
+      - --entrypoints.websecure.proxyprotocol.trustedips=10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,fc00::/7
+    environment:
+      CF_DNS_API_TOKEN: ${CF_DNS_API_TOKEN}
+      CF_ZONE_API_TOKEN: ${CF_ZONE_API_TOKEN}
+    volumes:
+      - /mnt/storage-pool/apps/traefik/acme:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    healthcheck:
+      test: traefik healthcheck --ping
+      interval: 60s
+      timeout: 30s
+      retries: 3
+      start_period: 10s
+    labels:
+      - traefik.enable=true
+      # Redirect / to /dashboard
+      - traefik.http.routers.traefik-redirect.rule=Host(`traefik.starsystem.dev`) && Path(`/`)
+      - traefik.http.routers.traefik-redirect.middlewares=traefik-redirect@docker
+      - traefik.http.routers.traefik-redirect.entrypoints=websecure
+      # Dashboard & API
+      - traefik.http.routers.traefik-dashboard.rule=Host(`traefik.starsystem.dev`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
+      - traefik.http.routers.traefik-dashboard.service=api@internal
+      - traefik.http.routers.traefik-dashboard.entrypoints=websecure
+      - traefik.http.routers.traefik-dashboard.middlewares=vpn-only@docker
+      # Metrics
+      - traefik.http.routers.traefik-metrics.rule=Host(`traefik.starsystem.dev`) && Path(`/metrics`)
+      - traefik.http.routers.traefik-metrics.service=prometheus@internal
+      - traefik.http.routers.traefik-metrics.entrypoints=websecure
+      # Ping
+      - traefik.http.routers.traefik-ping.rule=Host(`traefik.starsystem.dev`) && Path(`/ping`)
+      - traefik.http.routers.traefik-ping.service=ping@internal
+      - traefik.http.routers.traefik-ping.entrypoints=websecure
+      # Middlewares
+      - traefik.tcp.middlewares.vpn-only.ipallowlist.sourcerange=10.0.0.0/8,192.168.0.0/16,172.17.0.0/16,127.0.0.1
+      - traefik.http.middlewares.traefik-redirect.addprefix.prefix=/dashboard
+      # CORS middleware
+      - traefik.http.middlewares.cors.headers.accesscontrolallowmethods=GET,POST,PUT,DELETE,OPTIONS,HEAD
+      - traefik.http.middlewares.cors.headers.accesscontrolallowheaders=*
+      - traefik.http.middlewares.cors.headers.accesscontrolalloworiginlist=https://home.starsystem.dev
+      - traefik.http.middlewares.cors.headers.accesscontrolmaxage=100
+      - traefik.http.middlewares.cors.headers.accesscontrolallowcredentials=true
+      - traefik.http.middlewares.cors.headers.addvaryheader=true
+    restart: always

@@ -1,0 +1,16 @@
+services:
+  adguard:
+    container_name: adguard
+    image: adguard/adguardhome:latest
+    ports:
+      - 53:53/tcp
+      - 53:53/udp
+    volumes:
+      - /mnt/storage-pool/apps/adguard/data:/opt/adguardhome/work
+      - /mnt/storage-pool/apps/config:/opt/adguardhome/conf
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.adguard.rule=Host(`dns.starsystem.dev`)
+      - traefik.http.routers.adguard.middlewares=vpn-only@docker
+      - traefik.http.services.adguard.loadbalancer.server.port=3000
+    restart: always
