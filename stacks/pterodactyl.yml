@@ -1,6 +1,6 @@
 services:
   panel:
-    container_name: panel
+    container_name: pterodactyl-panel
     image: ghcr.io/pterodactyl/panel:latest
     depends_on:
       - redis
@@ -40,7 +40,7 @@ services:
     restart: always
   
   mariadb:
-    container_name: mariadb
+    container_name: pterodactyl-mariadb
     image: mariadb:10.5
     volumes:
       - /mnt/storage-pool/databases/mariadb/pterodactyl:/var/lib/mysql
@@ -54,7 +54,7 @@ services:
     restart: always
   
   redis:
-    container_name: redis
+    container_name: pterodactyl-redis
     image: redis:alpine
     labels:
       - traefik.enable=false
