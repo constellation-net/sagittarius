@@ -1,3 +1,7 @@
+networks:
+  traefik_bridge:
+    external: true
+
 services:
   adguard:
     container_name: adguard
@@ -5,6 +9,8 @@ services:
     ports:
       - 53:53/tcp
       - 53:53/udp
+    networks:
+      - traefik_bridge
     volumes:
       - /mnt/storage-pool/apps/adguard/data:/opt/adguardhome/work
       - /mnt/storage-pool/apps/config:/opt/adguardhome/conf

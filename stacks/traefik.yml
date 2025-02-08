@@ -1,3 +1,7 @@
+networks:
+  traefik_bridge:
+    external: true
+
 services:
   traefik:
     container_name: traefik
@@ -5,6 +9,8 @@ services:
     ports:
       - 80:80
       - 443:443
+    networks:
+      - traefik_bridge
     command:
       - --providers.docker
       - --log.level=DEBUG

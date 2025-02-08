@@ -1,9 +1,19 @@
+networks:
+  default:
+    name: lldap_internal
+
+  traefik_bridge:
+    external: true
+
 services:
   lldap:
     container_name: lldap-lldap
     image: lldap/lldap:latest
     ports:
       - 389:3890
+    networks:
+      - default
+      - traefik_bridge
     depends_on:
       - postgres
     environment:

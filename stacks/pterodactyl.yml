@@ -1,3 +1,10 @@
+networks:
+  default:
+    name: pterodactyl_internal
+
+  traefik_bridge:
+    external: true
+
 services:
   panel:
     container_name: pterodactyl-panel
@@ -5,6 +12,9 @@ services:
     depends_on:
       - redis
       - mariadb
+    networks:
+      - default
+      - traefik_bridge
     volumes:
       - /mnt/storage-pool/apps/pterodactyl/var:/app/var/
       - /mnt/storage-pool/apps/pterodactyl/logs:/app/storage/logs
