@@ -12,6 +12,8 @@ services:
     networks:
       - traefik_bridge
     command:
+      - --providers.file.directory=/etc/traefik/files
+      - --providers.file.watch=true
       - --providers.docker.network=traefik_bridge
       - --log.level=DEBUG
       - --global.sendanonymoususage=false
@@ -54,6 +56,7 @@ services:
       CF_ZONE_API_TOKEN: ${CF_ZONE_API_TOKEN}
     volumes:
       - /mnt/storage-pool/apps/traefik/acme:/data
+      - /mnt/storage-pool/apps/traefik/config:/etc/traefik/files
       - /var/run/docker.sock:/var/run/docker.sock
     healthcheck:
       test: traefik healthcheck --ping
