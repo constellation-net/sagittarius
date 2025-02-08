@@ -12,7 +12,7 @@ services:
     networks:
       - traefik_bridge
     command:
-      - --providers.docker
+      - --providers.docker.network=traefik_bridge
       - --log.level=DEBUG
       - --global.sendanonymoususage=false
       # Ping & API
