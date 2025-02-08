@@ -3,7 +3,7 @@ http:
     clover-wings:
       entryPoints:
         - websecure
-      rule: Host(`clover.starsystem.dev`)
+      rule: Host(`clover.games.starsystem.dev`)
       service: clover-wings
 
   services:
