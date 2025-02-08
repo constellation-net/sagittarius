@@ -79,7 +79,7 @@ services:
       # CORS middleware
       - traefik.http.middlewares.cors.headers.accesscontrolallowmethods=GET,POST,PUT,DELETE,OPTIONS,HEAD
       - traefik.http.middlewares.cors.headers.accesscontrolallowheaders=*
-      - traefik.http.middlewares.cors.headers.accesscontrolalloworiginlist=https://home.starsystem.dev
+      - traefik.http.middlewares.cors.headers.accesscontrolalloworiginlist=https://home.starsystem.de,https://games.starsystem.dev
       - traefik.http.middlewares.cors.headers.accesscontrolmaxage=100
       - traefik.http.middlewares.cors.headers.accesscontrolallowcredentials=true
       - traefik.http.middlewares.cors.headers.addvaryheader=true
