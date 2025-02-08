@@ -71,7 +71,7 @@ services:
       - traefik.http.routers.traefik-metrics.service=prometheus@internal
       - traefik.http.routers.traefik-metrics.entrypoints=websecure
       # Middlewares
-      - traefik.tcp.middlewares.vpn-only.ipallowlist.sourcerange=10.0.0.0/8,192.168.0.0/16,172.17.0.0/16,127.0.0.1
+      - traefik.http.middlewares.vpn-only.ipallowlist.sourcerange=10.0.0.0/8,192.168.0.0/16,172.17.0.0/16,127.0.0.1
       - traefik.http.middlewares.traefik-redirect.replacepath.path=/dashboard
       # CORS middleware
       - traefik.http.middlewares.cors.headers.accesscontrolallowmethods=GET,POST,PUT,DELETE,OPTIONS,HEAD
