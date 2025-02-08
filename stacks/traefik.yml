@@ -12,8 +12,8 @@ services:
     networks:
       - traefik_bridge
     command:
-      - --providers.file.directory=/etc/traefik/files
-      - --providers.file.watch=true
+      - --providers.http.endpoint=https://raw.githubusercontent.com/constellation-net/sagittarius/refs/heads/main/configs/traefik.yml
+      - --providers.http.pollInterval=60s
       - --providers.docker.network=traefik_bridge
       - --log.level=DEBUG
       - --global.sendanonymoususage=false
@@ -55,8 +55,7 @@ services:
       CF_DNS_API_TOKEN: ${CF_DNS_API_TOKEN}
       CF_ZONE_API_TOKEN: ${CF_ZONE_API_TOKEN}
     volumes:
-      - /mnt/storage-pool/apps/traefik/acme:/data
-      - /mnt/storage-pool/apps/traefik/config:/etc/traefik/files
+      - /mnt/storage-pool/apps/traefik:/data
       - /var/run/docker.sock:/var/run/docker.sock
     healthcheck:
       test: traefik healthcheck --ping

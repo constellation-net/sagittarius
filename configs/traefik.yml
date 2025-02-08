@@ -1,0 +1,15 @@
+http:
+  routers:
+    clover-wings:
+      entryPoints:
+        - websecure
+      rule: Host(`clover.starsystem.dev`)
+      service: clover-wings
+
+  services:
+    clover-wings:
+      loadBalancer:
+        servers:
+          - url: http://10.0.0.241:443
+
+# TODO: replace this with traefik kop
