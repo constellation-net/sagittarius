@@ -9,12 +9,12 @@ http:
     truenas:
       entryPoints:
         - websecure
-      rule: Host(`sagittarius.starsystem.dev`)
+      rule: Host(`truenas.starsystem.dev`)
 
     proxmox:
       entryPoints:
         - websecure
-      rule: Host(`nebula.starsystem.dev`)
+      rule: Host(`proxmox.starsystem.dev`)
 
   services:
     clover-wings:
