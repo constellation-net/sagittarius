@@ -10,11 +10,13 @@ http:
       entryPoints:
         - websecure
       rule: Host(`truenas.starsystem.dev`)
+      service: truenas
 
     proxmox:
       entryPoints:
         - websecure
       rule: Host(`proxmox.starsystem.dev`)
+      service: proxmox
 
   services:
     clover-wings:
