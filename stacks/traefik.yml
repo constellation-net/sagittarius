@@ -3,6 +3,24 @@ networks:
     external: true
 
 services:
+  ddns:
+    container_name: ddns
+    image: favonia/cloudflare-ddns:latest
+    network_mode: host
+    environment:
+      CLOUDFLARE_API_TOKEN: ${CLOUDFLARE_API_TOKEN}
+      DOMAINS: "*.starsystem.dev,*.games.starsystem.dev"
+      PROXIED: false
+      IP6_PROVIDER: none
+    restart: always
+    # Drop all permissions to prevent privilege escalation
+    user: "1000:1000"
+    read_only: true
+    cap_drop: 
+      - all
+    security_opt: 
+      - no-new-privileges:true
+
   traefik:
     container_name: traefik
     image: traefik:v3.1
