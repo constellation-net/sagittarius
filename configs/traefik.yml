@@ -6,10 +6,30 @@ http:
       rule: Host(`clover.games.starsystem.dev`)
       service: clover-wings
 
+    truenas:
+      entryPoints:
+        - websecure
+      rule: Host(`sagittarius.starsystem.dev`)
+
+    proxmox:
+      entryPoints:
+        - websecure
+      rule: Host(`nebula.starsystem.dev`)
+
   services:
     clover-wings:
       loadBalancer:
         servers:
           - url: http://10.0.0.241:443
+
+    truenas:
+      loadBalancer:
+        servers:
+          - url: http://10.0.0.250:8080
+
+    proxmox:
+      loadBalancer:
+        servers:
+          - url: http://10.0.0.240:8006
 
 # TODO: replace this with traefik kop
