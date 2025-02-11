@@ -8,6 +8,8 @@ services:
     image: ghcr.io/wg-easy/wg-easy
     ports:
       - 51820:51820/udp
+    networks:
+      - traefik_bridge
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
