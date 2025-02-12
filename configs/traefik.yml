@@ -18,6 +18,12 @@ http:
       rule: Host(`proxmox.starsystem.dev`)
       service: proxmox
 
+    com-bluemap:
+      entryPoints:
+        - websecure
+      rule: Host(`com.games.starsystem.dev`)
+      service: com-bluemap
+
   services:
     clover-wings:
       loadBalancer:
@@ -33,5 +39,10 @@ http:
       loadBalancer:
         servers:
           - url: http://10.0.0.240:8006
+
+    com-bluemap:
+      loadBalancer:
+        servers:
+          - url: http://10.0.0.241:12000
 
 # TODO: replace this with traefik kop
