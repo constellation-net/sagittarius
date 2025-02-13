@@ -43,7 +43,7 @@ services:
       GITEA__server__SSH_LISTEN_PORT: "2222"
       GITEA__server__ROOT_URL: https://git.starsystem.dev/
       GITEA__server__START_SSH_SERVER: "true"
-      GITEA__server__PROTOCOL: https
+      GITEA__server__PROTOCOL: http
       GITEA__server__SSH_AUTHORIZED_KEYS_BACKUP: "true"
       GITEA__service__DISABLE_REGISTRATION: "true" # Prevent users from registering themselves
       GITEA__admin__USER_EXTERNAL_USER_DISABLE_FEATURES: deletion # Users cannot delete their Gitea account (this will be done via LDAP instead)
