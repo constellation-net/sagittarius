@@ -1,6 +1,6 @@
 networks:
   default:
-    name: lldap_internal
+    name: gitea_internal
 
   traefik_bridge:
     external: true
