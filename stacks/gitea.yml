@@ -15,7 +15,7 @@ services:
     depends_on:
       - postgres
     ports:
-      - "2222:22"
+      - "2222:2222"
     healthcheck:
       test: curl -fSs http://localhost:3000/api/healthz || exit 1
       interval: 60s
@@ -40,7 +40,7 @@ services:
       GITEA__security__INTERNAL_TOKEN: ${INTERNAL_TOKEN}
       GITEA__security__INSTALL_LOCK: "true" # Disables the install screen
       GITEA__server__DOMAIN: git.starsystem.dev
-      GITEA__server__SSH_LISTEN_PORT: "22"
+      GITEA__server__SSH_LISTEN_PORT: "2222"
       GITEA__server__ROOT_URL: https://git.starsystem.dev/
       GITEA__server__START_SSH_SERVER: "true"
       GITEA__server__PROTOCOL: https
