@@ -38,7 +38,6 @@ services:
       GITEA__mailer__PASSWD: ${EMAIL_PASSWORD}
       GITEA__security__SECRET_KEY: ${SECRET_KEY}
       GITEA__security__INTERNAL_TOKEN: ${INTERNAL_TOKEN}
-      GITEA__security__INSTALL_LOCK: "true" # Disables the install screen
       GITEA__server__DOMAIN: git.starsystem.dev
       GITEA__server__SSH_LISTEN_PORT: "2222"
       GITEA__server__ROOT_URL: https://git.starsystem.dev/
