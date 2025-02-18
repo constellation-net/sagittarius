@@ -27,7 +27,7 @@ http:
       entryPoints:
         - websecure
       rule: Host(`proxmox.starsystem.dev`)
-      service: proxmox
+      service: proxmox-web
 
     com-bluemap:
       entryPoints:
