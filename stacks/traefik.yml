@@ -73,9 +73,6 @@ services:
       - --entrypoints.websecure.forwardedheaders.trustedips=10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,fc00::/7
       - --entrypoints.websecure.proxyprotocol.insecure=false
       - --entrypoints.websecure.proxyprotocol.trustedips=10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,fc00::/7
-      # SPICE entrypoints
-      - --entrypoints.spice.address=:3128
-      - --entrypoints.spice-tls.address=:61000
     environment:
       CF_DNS_API_TOKEN: ${CF_DNS_API_TOKEN}
       CF_ZONE_API_TOKEN: ${CF_ZONE_API_TOKEN}
