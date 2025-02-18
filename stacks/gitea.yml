@@ -50,7 +50,7 @@ services:
       GITEA__service__DISABLE_REGISTRATION: "true" # Prevent users from registering themselves
       GITEA__admin__USER_EXTERNAL_USER_DISABLE_FEATURES: deletion # Users cannot delete their Gitea account (this will be done via LDAP instead)
     volumes:
-      - /mnt/storage-pool/apps/gitea/data:/var/lib/gitea
+      - /mnt/storage-pool/apps/gitea/data:/data
       - /mnt/storage-pool/apps/gitea/config:/etc/gitea
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
