@@ -41,6 +41,8 @@ services:
       GITEA__security__INSTALL_LOCK: "true" # Disables the install screen
       GITEA__server__DOMAIN: git.starsystem.dev
       GITEA__server__SSH_LISTEN_PORT: "2222"
+      GITEA__server__SSH_DOMAIN: git.starsystem.dev
+      GITEA__server__SSH_PORT: "22"
       GITEA__server__ROOT_URL: https://git.starsystem.dev/
       GITEA__server__START_SSH_SERVER: "true"
       GITEA__server__PROTOCOL: http
