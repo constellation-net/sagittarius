@@ -50,29 +50,4 @@ http:
         servers:
           - url: http://10.0.0.241:12000
 
-tcp:
-  routers:
-    proxmox-spice:
-      entryPoints:
-        - spice
-      rule: HostSNI(`*`)
-      service: proxmox-spice
-
-    proxmox-spice-tls:
-      entryPoints:
-        - spice-tls
-      rule: HostSNI(`proxmox.starsystem.dev`)
-      service: proxmox-spice-tls
-
-  services:
-    proxmox-spice:
-      loadBalancer:
-        servers:
-          - address: 10.0.0.240:3128
-
-    proxmox-spice-tls:
-      loadBalancer:
-        servers:
-          - address: 10.0.0.240:61000
-
 # TODO: replace this with traefik kop
