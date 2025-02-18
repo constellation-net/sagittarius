@@ -19,6 +19,8 @@ services:
       - /mnt/storage-pool/apps/pterodactyl/var:/app/var/
       - /mnt/storage-pool/apps/pterodactyl/logs:/app/storage/logs
       - /mnt/storage-pool/apps/pterodactyl/nginx:/etc/nginx/http.d/
+    env_file:
+      - stack.env
     environment:
       DB_DATABASE: ${DB_DATABASE}
       DB_USERNAME: ${DB_USERNAME}
@@ -54,6 +56,8 @@ services:
     image: mariadb:10.5
     volumes:
       - /mnt/storage-pool/databases/mariadb/pterodactyl:/var/lib/mysql
+    env_file:
+      - stack.env
     environment:
       MYSQL_DATABASE: ${DB_DATABASE}
       MYSQL_USER: ${DB_USERNAME}
@@ -66,6 +70,8 @@ services:
   redis:
     container_name: pterodactyl-redis
     image: redis:alpine
+    env_file:
+      - stack.env
     labels:
       - traefik.enable=false
     restart: always

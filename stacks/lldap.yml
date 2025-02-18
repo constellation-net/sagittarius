@@ -7,7 +7,7 @@ networks:
 
 services:
   lldap:
-    container_name: lldap-lldap
+    container_name: lldap
     image: lldap/lldap:latest
     ports:
       - 389:3890
@@ -16,6 +16,8 @@ services:
       - traefik_bridge
     depends_on:
       - postgres
+    env_file:
+      - stack.env
     environment:
       LLDAP_LDAP_BASE_DN: ${BASE_DN}
       LLDAP_HTTP_URL: ${APP_URL}
@@ -44,10 +46,17 @@ services:
   postgres:
     container_name: lldap-postgres
     image: postgres:17
+    env_file:
+      - stack.env
     environment:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_DATABASE}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}"]
+      interval: 5s
+      retries: 5
+      timeout: 5s
     volumes:
       - /mnt/storage-pool/databases/postgresql/lldap:/var/lib/postgresql/data
     labels:

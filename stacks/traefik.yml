@@ -2,11 +2,16 @@ networks:
   traefik_bridge:
     external: true
 
+  prometheus_bridge:
+    external: true
+
 services:
   ddns:
     container_name: ddns
     image: favonia/cloudflare-ddns:latest
     network_mode: host
+    env_file:
+      - stack.env
     environment:
       CLOUDFLARE_API_TOKEN: ${CLOUDFLARE_API_TOKEN}
       DOMAINS: "*.starsystem.dev,*.games.starsystem.dev"
@@ -29,6 +34,7 @@ services:
       - 443:443
     networks:
       - traefik_bridge
+      - prometheus_bridge
     command:
       - --providers.http.endpoint=https://raw.githubusercontent.com/constellation-net/sagittarius/refs/heads/main/configs/traefik.yml
       - --providers.http.pollInterval=60s
@@ -69,6 +75,8 @@ services:
       - --entrypoints.websecure.forwardedheaders.trustedips=10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,fc00::/7
       - --entrypoints.websecure.proxyprotocol.insecure=false
       - --entrypoints.websecure.proxyprotocol.trustedips=10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,fc00::/7
+    env_file:
+      - stack.env
     environment:
       CF_DNS_API_TOKEN: ${CF_DNS_API_TOKEN}
       CF_ZONE_API_TOKEN: ${CF_ZONE_API_TOKEN}
@@ -93,7 +101,7 @@ services:
       - traefik.http.routers.traefik-metrics.service=prometheus@internal
       - traefik.http.routers.traefik-metrics.entrypoints=websecure
       # Middlewares
-      - traefik.http.middlewares.vpn-only.ipallowlist.sourcerange=10.0.0.0/8,192.168.0.0/16,172.17.0.0/16,127.0.0.1,0.0.0.0/0
+      - traefik.http.middlewares.vpn-only.ipallowlist.sourcerange=10.0.0.0/8,192.168.0.0/16,172.17.0.0/16,127.0.0.1
       # CORS middleware
       - traefik.http.middlewares.cors.headers.accesscontrolallowmethods=GET,POST,PUT,DELETE,OPTIONS,HEAD
       - traefik.http.middlewares.cors.headers.accesscontrolallowheaders=*
@@ -102,3 +110,5 @@ services:
       - traefik.http.middlewares.cors.headers.accesscontrolallowcredentials=true
       - traefik.http.middlewares.cors.headers.addvaryheader=true
     restart: always
+
+# TODO: custom error pages

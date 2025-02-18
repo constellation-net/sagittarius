@@ -22,10 +22,9 @@ services:
       timeout: 30s
       retries: 3
       start_period: 10s
+    env_file:
+      - stack.env
     environment:
-      USER: apps
-      USER_UID: "568"
-      USER_GID: "568"
       GITEA_APP_NAME: Gitea | Constellation
       GITEA__database__DB_TYPE: postgres
       GITEA__database__HOST: postgres:5432
@@ -51,7 +50,7 @@ services:
       GITEA__server__PROTOCOL: http
       GITEA__server__SSH_AUTHORIZED_KEYS_BACKUP: "true"
       GITEA__service__DISABLE_REGISTRATION: "true" # Prevent users from registering themselves
-      GITEA__admin__USER_EXTERNAL_USER_DISABLE_FEATURES: deletion # Users cannot delete their Gitea account (this will be done via LDAP instead)
+      GITEA__admin__USER_EXTERNAL_USER_DISABLE_FEATURES: deletion,manage_ssh_keys,manage_gpg_keys,manage_credentials,change_username,manage_mfa,change_full_name # All of these are managed by LDAP
     volumes:
       - /mnt/storage-pool/apps/gitea/data:/data
       - /mnt/storage-pool/apps/gitea/config:/etc/gitea
@@ -66,6 +65,8 @@ services:
   postgres:
     container_name: gitea-postgres
     image: postgres:17
+    env_file:
+      - stack.env
     environment:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}

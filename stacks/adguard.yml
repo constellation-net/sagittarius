@@ -11,9 +11,11 @@ services:
       - 53:53/udp
     networks:
       - traefik_bridge
+    env_file:
+      - stack.env
     volumes:
       - /mnt/storage-pool/apps/adguard/data:/opt/adguardhome/work
-      - /mnt/storage-pool/apps/config:/opt/adguardhome/conf
+      - /mnt/storage-pool/apps/adguard/config:/opt/adguardhome/conf
     labels:
       - traefik.enable=true
       - traefik.http.routers.adguard.rule=Host(`dns.starsystem.dev`)
