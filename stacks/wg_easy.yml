@@ -16,8 +16,6 @@ services:
     sysctls:
       - net.ipv4.ip_forward=1
       - net.ipv4.conf.all.src_valid_mark=1
-    env_file:
-      - stack.env
     environment:
       LANG: en
       PORT: "80"
