@@ -38,7 +38,7 @@ http:
     proxmox:
       loadBalancer:
         servers:
-          - url: http://10.0.0.240:8006
+          - url: https://10.0.0.240:8006
 
     com-bluemap:
       loadBalancer:
