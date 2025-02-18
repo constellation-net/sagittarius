@@ -19,7 +19,6 @@ services:
       IP6_PROVIDER: none
     restart: always
     # Drop all permissions to prevent privilege escalation
-    user: "1000:1000"
     read_only: true
     cap_drop: 
       - all
@@ -75,8 +74,6 @@ services:
       - --entrypoints.websecure.forwardedheaders.trustedips=10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,fc00::/7
       - --entrypoints.websecure.proxyprotocol.insecure=false
       - --entrypoints.websecure.proxyprotocol.trustedips=10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,fc00::/7
-    env_file:
-      - stack.env
     environment:
       CF_DNS_API_TOKEN: ${CF_DNS_API_TOKEN}
       CF_ZONE_API_TOKEN: ${CF_ZONE_API_TOKEN}
