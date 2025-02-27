@@ -1,0 +1,30 @@
+networks:
+  traefik_bridge:
+    external: true
+
+services:
+  jellyfin:
+    container_name: jellyfin
+    image: jellyfin/jellyfin
+    env_file:
+      - stack.env
+    networks:
+      - traefik_bridge
+    volumes:
+      - /mnt/storage-pool/apps/jellyfin/config:/config
+      - /mnt/storage-pool/apps/jellyfin/cache:/cache
+      - /mnt/storage-pool/media:/media
+    restart: always
+    runtime: nvidia
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities:
+                - gpu
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.adguard.rule=Host(`media.starsystem.dev`)
+      - traefik.http.services.adguard.loadbalancer.server.port=8096
