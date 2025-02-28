@@ -6,8 +6,16 @@ services:
   jellyfin:
     container_name: jellyfin
     image: jellyfin/jellyfin
+    # Render group, needed for Jellyfin to use GPU
+    group_add:
+      - "107"
+    devices:
+      - /dev/dri/renderD128:/dev/dri/renderD128
+      - /dev/dri/card0:/dev/dri/card0
     env_file:
       - stack.env
+    environment:
+      TZ: Europe/London
     networks:
       - traefik_bridge
     volumes:
@@ -15,15 +23,6 @@ services:
       - /mnt/storage-pool/apps/jellyfin/cache:/cache
       - /mnt/storage-pool/media:/media
     restart: always
-    runtime: nvidia
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities:
-                - gpu
     labels:
       - traefik.enable=true
       - traefik.http.routers.adguard.rule=Host(`media.starsystem.dev`)
