@@ -39,7 +39,6 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.lldap.rule=Host(`users.starsystem.dev`)
-      - traefik.http.routers.lldap.middlewares=vpn-only@docker
       - traefik.http.services.lldap.loadbalancer.server.port=17170
     restart: always
 
