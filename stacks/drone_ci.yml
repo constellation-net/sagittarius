@@ -1,4 +1,7 @@
 networks:
+  default:
+    name: drone_internal
+
   traefik_bridge:
     external: true
 
@@ -18,6 +21,7 @@ services:
       DRONE_DATABASE_DATASOURCE: postgres://${DB_USERNAME}:${DB_PASSWORD}@postgres:5432/${DB_DATABASE}?sslmode=disable
       DRONE_DATABASE_SECRET: ${DRONE_DATABASE_SECRET}
     networks:
+      - default
       - traefik_bridge
     volumes:
       - /mnt/storage-pool/apps/drone:/data
@@ -36,6 +40,8 @@ services:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_DATABASE}
+    networks:
+      - default
     volumes:
       - /mnt/storage-pool/databases/postgresql/drone:/var/lib/postgresql/data
     labels:
