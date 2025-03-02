@@ -14,8 +14,6 @@ services:
       - /dev/dri/card0:/dev/dri/card0
     env_file:
       - stack.env
-    environment:
-      TZ: Europe/London
     networks:
       - traefik_bridge
     volumes:

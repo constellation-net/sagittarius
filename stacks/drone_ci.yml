@@ -9,6 +9,8 @@ services:
   drone:
     container_name: drone
     image: drone/drone:2
+    depends_on:
+      - postgres
     environment:
       DRONE_GITEA_CLIENT_ID: ${DRONE_GITEA_CLIENT_ID}
       DRONE_GITEA_CLIENT_SECRET: ${DRONE_GITEA_CLIENT_SECRET}
