@@ -15,12 +15,16 @@ http:
         - websecure
       rule: Host(`truenas.starsystem.dev`)
       service: truenas
+      middlewares:
+        - vpn-only@docker
 
     proxmox-web:
       entryPoints:
         - websecure
       rule: Host(`proxmox.starsystem.dev`)
       service: proxmox-web
+      middlewares:
+        - vpn-only@docker
 
     com-bluemap:
       entryPoints:
