@@ -5,7 +5,7 @@ networks:
 services:
   youtrack:
     container_name: youtrack
-    image: jetbrains/youtrack
+    image: jetbrains/youtrack:2025.1.64291
     networks:
       - traefik_bridge
     env_file:
