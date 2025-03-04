@@ -1,0 +1,51 @@
+networks:
+  default:
+    name: teamcity_internal
+
+  traefik_bridge:
+    external: true
+
+services:
+  teamcity:
+    container_name: teamcity
+    image: jetbrains/teamcity-server
+    depends_on:
+      - postgres
+    networks:
+      - default
+      - traefik_bridge
+    env_file:
+      - stack.env
+    environment:
+      TEAMCITY_HTTPS_PROXY_ENABLED: true
+      TEAMCITY_DB_URL: jdbc:postgresql://postgres:5432/${DB_DATABASE}
+      TEAMCITY_DB_USER: ${DB_USERNAME}
+      TEAMCITY_DB_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - /mnt/storage-pool/apps/teamcity/data:/data/teamcity_server/datadir
+      - /mnt/storage-pool/apps/teamcity/logs:/opt/teamcity/logs
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.teamcity.rule=Host(`teamcity.starsystem.dev`)
+      - traefik.http.services.teamcity.loadbalancer.server.port=8111
+    restart: always
+
+  postgres:
+    container_name: teamcity-postgres
+    image: postgres:17
+    env_file:
+      - stack.env
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}" ]
+      interval: 5s
+      retries: 5
+      timeout: 5s
+    volumes:
+      - /mnt/storage-pool/databases/postgresql/teamcity:/var/lib/postgresql/data
+    labels:
+      - traefik.enable=false
+    restart: always

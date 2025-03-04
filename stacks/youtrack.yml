@@ -1,0 +1,22 @@
+networks:
+  traefik_bridge:
+    external: true
+
+services:
+  youtrack:
+    container_name: youtrack
+    image: jetbrains/youtrack
+    networks:
+      - traefik_bridge
+    env_file:
+      - stack.env
+    volumes:
+      - /mnt/storage-pool/apps/youtrack/data:/opt/youtrack/data
+      - /mnt/storage-pool/apps/youtrack/logs:/opt/youtrack/logs
+      - /mnt/storage-pool/apps/youtrack/conf:/opt/youtrack/conf
+      - /mnt/storage-pool/apps/youtrack/backups:/opt/youtrack/backups
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.youtrack.rule=Host(`youtrack.starsystem.dev`)
+      - traefik.http.services.youtrack.loadbalancer.server.port=8080
+    restart: always
