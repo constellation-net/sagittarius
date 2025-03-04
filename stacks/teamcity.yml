@@ -9,6 +9,7 @@ services:
   teamcity:
     container_name: teamcity
     image: jetbrains/teamcity-server
+    user: 568:568
     depends_on:
       - postgres
     networks:
