@@ -1,0 +1,27 @@
+networks:
+  traefik_bridge:
+    external: true
+
+services:
+  ollama:
+    container_name: ollama
+    image: ghcr.io/open-webui/open-webui:ollama
+    networks:
+      - traefik_bridge
+    environment:
+      OLLAMA_BASE_URL: https://ollama.starsystem.dev
+    volumes:
+      - /mnt/storage-pool/apps/ollama:/root/.ollama
+      - /mnt/storage-pool/apps/openwebui:/app/backend/data
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.ollama.rule=Host(`ollama.starsystem.dev`)
+      - traefik.http.services.ollama.loadbalancer.server.port=8080
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
+    restart: always
