@@ -26,6 +26,22 @@ http:
       middlewares:
         - vpn-only@docker
 
+    firewall:
+      entryPoints:
+        - websecure
+      rule: Host(`firewall.starsystem.dev`)
+      services: firewall
+      middlewares:
+        - vpn-only@docker
+
+    switch:
+      entryPoints:
+        - websecure
+      rule: Host(`switch.starsystem.dev`)
+      services: switch
+      middlewares:
+        - vpn-only@docker
+
     com-bluemap:
       entryPoints:
         - websecure
@@ -42,6 +58,16 @@ http:
       loadBalancer:
         servers:
           - url: http://10.0.0.250:8080
+
+    firewall:
+      loadBalancer:
+        servers:
+          - url: http://10.0.0.1:80
+
+    switch:
+      loadBalancer:
+        servers:
+          - url: http://10.0.0.220:80
 
     proxmox-web:
       loadBalancer:
