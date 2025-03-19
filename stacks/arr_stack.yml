@@ -7,6 +7,12 @@ services:
     container_name: homarr
     image: ghcr.io/homarr-labs/homarr:latest
     environment:
+      AUTH_PROVIDERS: credentials,ldap
+      AUTH_LDAP_URI: ldap://sagittarius.starsystem.dev
+      AUTH_LDAP_BASE: ou=people,dc=starsystem,dc=dev
+      AUTH_LDAP_BIND_DN: cn=noreply,ou=people,dc=starsystem,dc=dev
+      AUTH_LDAP_BIND_PASSWORD: ${LDAP_BIND_PASSWORD}
+      AUTH_LDAP_USERNAME_FILTER_EXTRA_ARG: (memberOf=cn=login_homarr,ou=groups,dc=starsystem,dc=dev)
       SECRET_ENCRYPTION_KEY: ${SECRET_ENCRYPTION_KEY}
     networks:
       - traefik_bridge
