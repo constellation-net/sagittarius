@@ -1,0 +1,20 @@
+networks:
+  traefik_bridge:
+    external: true
+
+services:
+  homarr:
+    container_name: homarr
+    image: ghcr.io/homarr-labs/homarr:latest
+    environment:
+      SECRET_ENCRYPTION_KEY: ${SECRET_ENCRYPTION_KEY}
+    networks:
+      - traefik_bridge
+    volumes:
+      - /mnt/storage-pool/apps/homarr:/appdata
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.homarr.rule=Host(`home.starsystem.dev`)
+      - traefik.http.services.homarr.loadbalancer.server.port=7575
+    restart: always
