@@ -15,6 +15,7 @@ services:
       AUTH_LDAP_USER_MAIL_ATTRIBUTE: mail
       AUTH_LDAP_USERNAME_ATTRIBUTE: uid
       AUTH_LDAP_USERNAME_FILTER_EXTRA_ARG: (memberOf=cn=login_homarr,ou=groups,dc=starsystem,dc=dev)
+      AUTH_LDAP_SEARCH_SCOPE: sub
       SECRET_ENCRYPTION_KEY: ${SECRET_ENCRYPTION_KEY}
     networks:
       - traefik_bridge
