@@ -9,6 +9,7 @@ services:
   readarr:
     container_name: readarr
     image: lscr.io/linuxserver/readarr:develop
+    user: 568:568
     networks:
       - default
       - traefik_bridge

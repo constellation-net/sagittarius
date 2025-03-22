@@ -9,6 +9,7 @@ services:
   radarr:
     container_name: radarr
     image: lscr.io/linuxserver/radarr:latest
+    user: 568:568
     networks:
       - default
       - traefik_bridge
