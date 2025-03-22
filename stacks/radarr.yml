@@ -1,0 +1,37 @@
+networks:
+  default:
+    name: radarr_internal
+
+  traefik_bridge:
+    external: true
+
+services:
+  radarr:
+    container_name: radarr
+    image: lscr.io/linuxserver/radarr:latest
+    networks:
+      - default
+      - traefik_bridge
+    volumes:
+      - /mnt/storage-pool/apps/radarr:/config
+      - /mnt/storage-pool/media/movies:/movies
+      - /mnt/storage-pool/media/downloads:/downloads
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.radarr.rule=Host(`radarr.starsystem.dev`)
+      - traefik.http.services.radarr.loadbalancer.server.port=7878
+    restart: always
+
+  exportarr:
+    container_name: radarr-exportarr
+    image: ghcr.io/onedr0p/exportarr:v2.0
+    networks:
+      - default
+    command: [ "radarr" ]
+    depends_on:
+      - radarr
+    environment:
+      PORT: "9707"
+      URL: http://radarr:7878
+      APIKEY: ${API_KEY}
+    restart: always

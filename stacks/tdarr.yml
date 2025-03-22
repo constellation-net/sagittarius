@@ -1,0 +1,41 @@
+networks:
+  traefik_bridge:
+    external: true
+
+services:
+  tdarr:
+    container_name: tdarr
+    image: ghcr.io/haveagitgat/tdarr:latest
+    networks:
+      - default
+      - traefik_bridge
+    volumes:
+      - /mnt/storage-pool/apps/tdarr/server:/app/server
+      - /mnt/storage-pool/apps/tdarr/configs:/app/configs
+      - /mnt/storage-pool/apps/tdarr/logs:/app/logs
+      - /mnt/storage-pool/apps/tdarr/cache:/temp
+      - /mnt/storage-pool/media:/media
+    environment:
+      NVIDIA_DRIVER_CAPABILITIES: all
+      NVIDIA_VISIBLE_DEVICES: all
+      internalNode: "true"
+      inContainer: "true"
+      ffmpegVersion: "7"
+      serverIP: 0.0.0.0
+      serverPort: "8266"
+      webUIPort: "8265"
+      nodeName: Sagittarius
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.tdarr.rule=Host(`tdarr.starsystem.dev`)
+      - traefik.http.services.tdarr.loadbalancer.server.port=8265
+    devices:
+      - /dev/dri:/dev/dri
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [ gpu ]
+    restart: always

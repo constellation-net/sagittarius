@@ -1,4 +1,7 @@
 networks:
+  default:
+    name: jellyfin_internal
+
   traefik_bridge:
     external: true
 
@@ -25,3 +28,46 @@ services:
       - traefik.enable=true
       - traefik.http.routers.jellyfin.rule=Host(`jellyfin.starsystem.dev`)
       - traefik.http.services.jellyfin.loadbalancer.server.port=8096
+
+  jellyseerr:
+    container_name: jellyseerr
+    image: fallenbagel/jellyseerr:latest
+    networks:
+      - default
+      - traefik_bridge
+    environment:
+      DB_TYPE: postgres
+      DB_HOST: jellyseerr-postgres
+      DB_PORT: "5432"
+      DB_USER: ${DB_USERNAME}
+      DB_PASS: ${DB_PASSWORD}
+      DB_NAME: ${DB_DATABASE}
+    depends_on:
+      - jellyseerr_postgres
+    volumes:
+      - /mnt/storage-pool/apps/jellyseerr:/app/config
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.jellyseerr.rule=Host(`jellyseerr.starsystem.dev`)
+      - traefik.http.services.jellyseerr.loadbalancer.server.port=5055
+    restart: always
+
+  jellyseerr_postgres:
+    container_name: jellyseerr-postgres
+    image: postgres:17
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    networks:
+      - default
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}" ]
+      interval: 5s
+      retries: 5
+      timeout: 5s
+    volumes:
+      - /mnt/storage-pool/databases/postgresql/jellyseerr:/var/lib/postgresql/data
+    labels:
+      - traefik.enable=false
+    restart: always

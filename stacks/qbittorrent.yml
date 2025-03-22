@@ -1,0 +1,18 @@
+networks:
+  traefik_bridge:
+    external: true
+
+services:
+  qbittorrent:
+    container_name: qbittorrent
+    image: lscr.io/linuxserver/qbittorrent:latest
+    networks:
+      - traefik_bridge
+    volumes:
+      - /mnt/storage-pool/apps/qbittorrent:/config
+      - /mnt/storage-pool/media/downloads:/downloads
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.qbittorrent.rule=Host(`torrent.starsystem.dev`)
+      - traefik.http.services.qbittorrent.loadbalancer.server.port=8080
+    restart: always

@@ -1,0 +1,37 @@
+networks:
+  default:
+    name: bazarr_internal
+
+  traefik_bridge:
+    external: true
+
+services:
+  bazarr:
+    container_name: bazarr
+    image: lscr.io/linuxserver/bazarr:latest
+    networks:
+      - default
+      - traefik_bridge
+    volumes:
+      - /mnt/storage-pool/apps/bazarr:/config
+      - /mnt/storage-pool/media/movies:/movies
+      - /mnt/storage-pool/media/shows:/tv
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.bazarr.rule=Host(`bazarr.starsystem.dev`)
+      - traefik.http.services.bazarr.loadbalancer.server.port=6767
+    restart: always
+
+  exportarr:
+    container_name: bazarr-exportarr
+    image: ghcr.io/onedr0p/exportarr:v2.0
+    networks:
+      - default
+    command: [ "bazarr" ]
+    depends_on:
+      - bazarr
+    environment:
+      PORT: "9707"
+      URL: http://bazarr:6767
+      APIKEY: ${API_KEY}
+    restart: always

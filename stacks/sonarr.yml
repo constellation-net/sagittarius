@@ -1,0 +1,37 @@
+networks:
+  default:
+    name: sonarr_internal
+
+  traefik_bridge:
+    external: true
+
+services:
+  sonarr:
+    container_name: sonarr
+    image: ghcr.io/linuxserver/sonarr:latest
+    networks:
+      - default
+      - traefik_bridge
+    volumes:
+      - /mnt/storage-pool/apps/sonarr:/config
+      - /mnt/storage-pool/media/shows:/tv
+      - /mnt/storage-pool/media/downloads:/downloads
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.sonarr.rule=Host(`sonarr.starsystem.dev`)
+      - traefik.http.services.sonarr.loadbalancer.server.port=8989
+    restart: always
+
+  exportarr:
+    container_name: sonarr-exportarr
+    image: ghcr.io/onedr0p/exportarr:v2.0
+    networks:
+      - default
+    command: [ "sonarr" ]
+    depends_on:
+      - sonarr
+    environment:
+      PORT: "9707"
+      URL: http://sonarr:8989
+      APIKEY: ${API_KEY}
+    restart: always

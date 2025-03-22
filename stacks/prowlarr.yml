@@ -1,0 +1,35 @@
+networks:
+  default:
+    name: prowlarr_internal
+
+  traefik_bridge:
+    external: true
+
+services:
+  prowlarr:
+    container_name: prowlarr
+    image: lscr.io/linuxserver/prowlarr:latest
+    networks:
+      - default
+      - traefik_bridge
+    volumes:
+      - /mnt/storage-pool/apps/prowlarr:/config
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.prowlarr.rule=Host(`prowlarr.starsystem.dev`)
+      - traefik.http.services.prowlarr.loadbalancer.server.port=9696
+    restart: always
+
+  exportarr:
+    container_name: prowlarr-exportarr
+    image: ghcr.io/onedr0p/exportarr:v2.0
+    networks:
+      - default
+    command: [ "prowlarr" ]
+    depends_on:
+      - prowlarr
+    environment:
+      PORT: "9707"
+      URL: http://prowlarr:9696
+      APIKEY: ${API_KEY}
+    restart: always
