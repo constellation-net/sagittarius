@@ -37,7 +37,7 @@ services:
       - traefik_bridge
     environment:
       DB_TYPE: postgres
-      DB_HOST: jellyseerr-postgres
+      DB_HOST: jellyseerr_postgres
       DB_PORT: "5432"
       DB_USER: ${DB_USERNAME}
       DB_PASS: ${DB_PASSWORD}
