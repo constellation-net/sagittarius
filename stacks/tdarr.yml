@@ -6,10 +6,6 @@ services:
   tdarr:
     container_name: tdarr
     image: ghcr.io/haveagitgat/tdarr:latest
-    user: 568:568
-    group_add:
-      - "107" # render
-      - "44" # video
     networks:
       - default
       - traefik_bridge
