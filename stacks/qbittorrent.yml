@@ -6,6 +6,11 @@ services:
   qbittorrent:
     container_name: qbittorrent
     image: lscr.io/linuxserver/qbittorrent:latest
+    ports:
+      - "6881:6881"
+      - "6881:6881/udp"
+    environment:
+      TORRENTING_PORT: "6881"
     networks:
       - traefik_bridge
     volumes:
