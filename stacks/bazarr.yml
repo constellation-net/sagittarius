@@ -19,6 +19,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.bazarr.rule=Host(`bazarr.starsystem.dev`)
+      - traefik.http.routers.bazarr.middlewares=vpn-only@docker
       - traefik.http.services.bazarr.loadbalancer.server.port=6767
     restart: always
 

@@ -17,6 +17,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.prowlarr.rule=Host(`prowlarr.starsystem.dev`)
+      - traefik.http.routers.prowlarr.middlewares=vpn-only@docker
       - traefik.http.services.prowlarr.loadbalancer.server.port=9696
     restart: always
 

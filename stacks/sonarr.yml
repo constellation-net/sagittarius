@@ -19,6 +19,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.sonarr.rule=Host(`sonarr.starsystem.dev`)
+      - traefik.http.routers.sonarr.middlewares=vpn-only@docker
       - traefik.http.services.sonarr.loadbalancer.server.port=8989
     restart: always
 

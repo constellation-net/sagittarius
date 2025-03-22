@@ -19,6 +19,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.readarr.rule=Host(`readarr.starsystem.dev`)
+      - traefik.http.routers.readarr.middlewares=vpn-only@docker
       - traefik.http.services.readarr.loadbalancer.server.port=8787
     restart: always
 
