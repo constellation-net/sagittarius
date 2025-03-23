@@ -1,0 +1,44 @@
+networks:
+  default:
+    name: authelia_internal
+
+  traefik_bridge:
+    external: true
+
+services:
+  authelia:
+    container_name: authelia
+    image: authelia/authelia:latest
+    networks:
+      - default
+      - traefik_bridge
+    environment:
+      AUTHELIA_STORAGE_POSTGRES_PASSWORD: ${DB_PASSWORD}
+      AUTHELIA_STORAGE_ENCRYPTION_KEY: ${ENCRYPTION_KEY}
+    volumes:
+      - /mnt/storage-pool/apps/authelia:/config
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.authelia.rule=Host(`login.starsystem.dev`)
+      - traefik.http.services.authelia.loadbalancer.server.port=9091
+    restart: always
+
+  postgres:
+    container_name: authelia-postgres
+    image: postgres:17
+    networks:
+      - default
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}" ]
+      interval: 5s
+      retries: 5
+      timeout: 5s
+    volumes:
+      - /mnt/storage-pool/databases/postgresql/authelia:/var/lib/postgresql/data
+    labels:
+      - traefik.enable=false
+    restart: always

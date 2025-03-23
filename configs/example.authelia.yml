@@ -1,0 +1,63 @@
+theme: auto
+
+telemetry:
+  metrics:
+    enabled: true
+
+privacy_policy:
+  enabled: true
+  require_user_acceptance: false
+  policy_url: https://starsystem.dev/privacy
+
+access_control:
+  default_policy: one_factor
+
+  rules:
+    domain: traefik.starsystem.dev
+    policy: one_factor
+    subject:
+      - group:login_traefik
+
+session:
+  cookies:
+    - domain: starsystem.dev
+      authelia_url: https://login.starsystem.dev
+      default_redirection_url: https://users.starsystem.dev
+
+storage:
+  postgres:
+    address: tcp://authelia_postgres:5432
+    database: authelia
+    username: authelia
+
+notifier:
+  disable_startup_check: true
+  smtp:
+    address: smtp://smtp.mail.me.com:587
+    username: jj.gledhill@icloud.com
+    password: "PASSWORD"
+    sender: Constellation Noreply <noreply@starsystem.dev>
+
+authentication_backend:
+  password_change:
+    disable: true
+  password_reset:
+    custom_url: https://users.starsystem.dev/reset-password/step1
+  ldap:
+    address: ldap://sagittarius.starsystem.dev:389
+    implementation: lldap
+    timeout: 5s
+    start_tls: false
+    base_dn: dc=starsystem,dc=dev
+    additional_users_dn: ou=people
+    users_filter: (&(|({username_attribute}={input})({mail_attribute}={input}))(objectClass=person))
+    additional_groups_dn: ou=groups
+    groups_filter: (member={dn})
+    user: cn=noreply,ou=people,dc=starsystem,dc=dev
+    password: "PASSWORD"
+    attributes:
+      distinguished_name: distinguishedName
+      username: uid
+      mail: mail
+      member_of: memberOf
+      group_name: cn
