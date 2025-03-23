@@ -36,4 +36,6 @@ services:
       PORT: "9707"
       URL: http://readarr:8787
       APIKEY: ${API_KEY}
+    labels:
+      - traefik.enable=false
     restart: always

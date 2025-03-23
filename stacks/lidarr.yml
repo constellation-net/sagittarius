@@ -35,4 +35,6 @@ services:
       PORT: "9707"
       URL: http://lidarr:8686
       APIKEY: ${API_KEY}
+    labels:
+      - traefik.enable=false
     restart: always
