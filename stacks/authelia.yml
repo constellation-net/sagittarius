@@ -12,6 +12,8 @@ services:
     networks:
       - default
       - traefik_bridge
+    depends_on:
+      - postgres
     environment:
       AUTHELIA_STORAGE_POSTGRES_PASSWORD: ${DB_PASSWORD}
       AUTHELIA_STORAGE_ENCRYPTION_KEY: ${ENCRYPTION_KEY}
