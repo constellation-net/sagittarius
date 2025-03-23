@@ -13,10 +13,10 @@ access_control:
   default_policy: one_factor
 
   rules:
-    domain: traefik.starsystem.dev
-    policy: one_factor
-    subject:
-      - group:login_traefik
+    - domain: traefik.starsystem.dev
+      policy: one_factor
+      subject:
+        - group:login_traefik
 
 session:
   cookies:
@@ -42,6 +42,7 @@ authentication_backend:
   password_change:
     disable: true
   password_reset:
+    disable: true
     custom_url: https://users.starsystem.dev/reset-password/step1
   ldap:
     address: ldap://sagittarius.starsystem.dev:389
