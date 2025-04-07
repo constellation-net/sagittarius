@@ -5,8 +5,15 @@ networks:
 services:
   cockpit:
     container_name: cockpit
+    image: quay.io/cockpit/ws
+    privileged: true
+    networks:
+      - traefik_bridge
+    volumes:
+      - /mnt/storage-pool/apps/cockpit/cockpit.conf:/etc/cockpit/cockpit.conf:ro
     labels:
       traefik.enable: true
       traefik.http.routers.cockpit.rule: Host(`cockpit.starsystem.dev`)
+      traefik.http.routers.cockpit.middlewares: vpn-only@docker
       traefik.http.services.cockpit.loadbalancer.server.port: 9090
     restart: always
