@@ -25,9 +25,9 @@ services:
       - /mnt/storage-pool/media:/media
     restart: always
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.jellyfin.rule=Host(`jellyfin.starsystem.dev`)
-      - traefik.http.services.jellyfin.loadbalancer.server.port=8096
+      traefik.enable: true
+      traefik.http.routers.jellyfin.rule: Host(`jellyfin.starsystem.dev`)
+      traefik.http.services.jellyfin.loadbalancer.server.port: 8096
 
   jellyseerr:
     container_name: jellyseerr
@@ -47,9 +47,9 @@ services:
     volumes:
       - /mnt/storage-pool/apps/jellyseerr:/app/config
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.jellyseerr.rule=Host(`jellyseerr.starsystem.dev`)
-      - traefik.http.services.jellyseerr.loadbalancer.server.port=5055
+      traefik.enable: true
+      traefik.http.routers.jellyseerr.rule: Host(`jellyseerr.starsystem.dev`)
+      traefik.http.services.jellyseerr.loadbalancer.server.port: 5055
     restart: always
 
   jellyseerr_postgres:
@@ -69,5 +69,5 @@ services:
     volumes:
       - /mnt/storage-pool/databases/postgresql/jellyseerr:/var/lib/postgresql/data
     labels:
-      - traefik.enable=false
+      traefik.enable: false
     restart: always

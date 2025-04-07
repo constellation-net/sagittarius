@@ -18,10 +18,10 @@ services:
       - /mnt/storage-pool/media/movies:/movies
       - /mnt/storage-pool/media/downloads:/downloads
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.radarr.rule=Host(`radarr.starsystem.dev`)
-      - traefik.http.routers.radarr.middlewares=vpn-only@docker
-      - traefik.http.services.radarr.loadbalancer.server.port=7878
+      traefik.enable: true
+      traefik.http.routers.radarr.rule: Host(`radarr.starsystem.dev`)
+      traefik.http.routers.radarr.middlewares: vpn-only@docker
+      traefik.http.services.radarr.loadbalancer.server.port: 7878
     restart: always
 
   exportarr:
@@ -37,5 +37,5 @@ services:
       URL: http://radarr:7878
       APIKEY: ${API_KEY}
     labels:
-      - traefik.enable=false
+      traefik.enable: false
     restart: always

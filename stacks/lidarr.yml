@@ -17,10 +17,10 @@ services:
       - /mnt/storage-pool/media/music:/music
       - /mnt/storage-pool/media/downloads:/downloads
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.lidarr.rule=Host(`lidarr.starsystem.dev`)
-      - traefik.http.routers.lidarr.middlewares=vpn-only@docker
-      - traefik.http.services.lidarr.loadbalancer.server.port=8686
+      traefik.enable: true
+      traefik.http.routers.lidarr.rule: Host(`lidarr.starsystem.dev`)
+      traefik.http.routers.lidarr.middlewares: vpn-only@docker
+      traefik.http.services.lidarr.loadbalancer.server.port: 8686
     restart: always
 
   exportarr:
@@ -36,5 +36,5 @@ services:
       URL: http://lidarr:8686
       APIKEY: ${API_KEY}
     labels:
-      - traefik.enable=false
+      traefik.enable: false
     restart: always

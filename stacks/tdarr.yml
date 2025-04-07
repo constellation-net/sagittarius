@@ -26,10 +26,10 @@ services:
       webUIPort: "8265"
       nodeName: Sagittarius
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.tdarr.rule=Host(`tdarr.starsystem.dev`)
-      - traefik.http.routers.tdarr.middlewares=vpn-only@docker
-      - traefik.http.services.tdarr.loadbalancer.server.port=8265
+      traefik.enable: true
+      traefik.http.routers.tdarr.rule: Host(`tdarr.starsystem.dev`)
+      traefik.http.routers.tdarr.middlewares: vpn-only@docker
+      traefik.http.services.tdarr.loadbalancer.server.port: 8265
     devices:
       - /dev/dri:/dev/dri
     deploy:

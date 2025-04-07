@@ -17,8 +17,8 @@ services:
       - /mnt/storage-pool/apps/adguard/data:/opt/adguardhome/work
       - /mnt/storage-pool/apps/adguard/config:/opt/adguardhome/conf
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.adguard.rule=Host(`dns.starsystem.dev`)
-      - traefik.http.routers.adguard.middlewares=vpn-only@docker
-      - traefik.http.services.adguard.loadbalancer.server.port=3000
+      traefik.enable: true
+      traefik.http.routers.adguard.rule: Host(`dns.starsystem.dev`)
+      traefik.http.routers.adguard.middlewares: vpn-only@docker
+      traefik.http.services.adguard.loadbalancer.server.port: 3000
     restart: always

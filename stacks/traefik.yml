@@ -86,28 +86,28 @@ services:
       retries: 3
       start_period: 10s
     labels:
-      - traefik.enable=true
+      traefik.enable: true
       # Dashboard & API
-      - traefik.http.routers.traefik-dashboard.rule=Host(`traefik.starsystem.dev`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
-      - traefik.http.routers.traefik-dashboard.service=api@internal
-      - traefik.http.routers.traefik-dashboard.entrypoints=websecure
-      - traefik.http.routers.traefik-dashboard.middlewares=vpn-only@docker,authelia@docker
+      traefik.http.routers.traefik-dashboard.rule: Host(`traefik.starsystem.dev`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
+      traefik.http.routers.traefik-dashboard.service: api@internal
+      traefik.http.routers.traefik-dashboard.entrypoints: websecure
+      traefik.http.routers.traefik-dashboard.middlewares: vpn-only@docker,authelia@docker
       # Metrics
-      - traefik.http.routers.traefik-metrics.rule=Host(`traefik.starsystem.dev`) && Path(`/metrics`)
-      - traefik.http.routers.traefik-metrics.service=prometheus@internal
-      - traefik.http.routers.traefik-metrics.entrypoints=websecure
+      traefik.http.routers.traefik-metrics.rule: Host(`traefik.starsystem.dev`) && Path(`/metrics`)
+      traefik.http.routers.traefik-metrics.service: prometheus@internal
+      traefik.http.routers.traefik-metrics.entrypoints: websecure
       # Middlewares
-      - traefik.http.middlewares.vpn-only.ipallowlist.sourcerange=10.0.0.0/8,192.168.0.0/16,172.17.0.0/16,127.0.0.1
-      - traefik.http.middlewares.authelia.forwardAuth.address=http://authelia:9091/api/authz/forward-auth
-      - traefik.http.middlewares.authelia.forwardAuth.trustForwardHeader=true
-      - traefik.http.middlewares.authelia.forwardAuth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Email,Remote-Name
+      traefik.http.middlewares.vpn-only.ipallowlist.sourcerange: 10.0.0.0/8,192.168.0.0/16,172.17.0.0/16,127.0.0.1
+      traefik.http.middlewares.authelia.forwardAuth.address: http://authelia:9091/api/authz/forward-auth
+      traefik.http.middlewares.authelia.forwardAuth.trustForwardHeader: true
+      traefik.http.middlewares.authelia.forwardAuth.authResponseHeaders: Remote-User,Remote-Groups,Remote-Email,Remote-Name
       # CORS middleware
-      - traefik.http.middlewares.cors.headers.accesscontrolallowmethods=GET,POST,PUT,DELETE,OPTIONS,HEAD
-      - traefik.http.middlewares.cors.headers.accesscontrolallowheaders=*
-      - traefik.http.middlewares.cors.headers.accesscontrolalloworiginlist=https://home.starsystem.dev,https://games.starsystem.dev
-      - traefik.http.middlewares.cors.headers.accesscontrolmaxage=100
-      - traefik.http.middlewares.cors.headers.accesscontrolallowcredentials=true
-      - traefik.http.middlewares.cors.headers.addvaryheader=true
+      traefik.http.middlewares.cors.headers.accesscontrolallowmethods: GET,POST,PUT,DELETE,OPTIONS,HEAD
+      traefik.http.middlewares.cors.headers.accesscontrolallowheaders: *
+      traefik.http.middlewares.cors.headers.accesscontrolalloworiginlist: https://home.starsystem.dev,https://games.starsystem.dev
+      traefik.http.middlewares.cors.headers.accesscontrolmaxage: 100
+      traefik.http.middlewares.cors.headers.accesscontrolallowcredentials: true
+      traefik.http.middlewares.cors.headers.addvaryheader: true
     restart: always
 
 # TODO: custom error pages

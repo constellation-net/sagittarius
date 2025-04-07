@@ -1,0 +1,12 @@
+networks:
+  traefik_bridge:
+    external: true
+
+services:
+  cockpit:
+    container_name: cockpit
+    labels:
+      traefik.enable: true
+      traefik.http.routers.cockpit.rule: Host(`cockpit.starsystem.dev`)
+      traefik.http.services.cockpit.loadbalancer.server.port: 9090
+    restart: always

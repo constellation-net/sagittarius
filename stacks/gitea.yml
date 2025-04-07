@@ -58,9 +58,9 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.gitea.rule=Host(`git.starsystem.dev`)
-      - traefik.http.services.gitea.loadbalancer.server.port=3000
+      traefik.enable: true
+      traefik.http.routers.gitea.rule: Host(`git.starsystem.dev`)
+      traefik.http.services.gitea.loadbalancer.server.port: 3000
     restart: always
 
   postgres:
@@ -80,5 +80,5 @@ services:
     volumes:
       - /mnt/storage-pool/databases/postgresql/gitea:/var/lib/postgresql/data
     labels:
-      - traefik.enable=false
+      traefik.enable: false
     restart: always

@@ -17,8 +17,8 @@ services:
       - /mnt/storage-pool/apps/qbittorrent:/config
       - /mnt/storage-pool/media/downloads:/downloads
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.qbittorrent.rule=Host(`torrent.starsystem.dev`)
-      - traefik.http.routers.qbittorrent.middlewares=vpn-only@docker
-      - traefik.http.services.qbittorrent.loadbalancer.server.port=8080
+      traefik.enable: true
+      traefik.http.routers.qbittorrent.rule: Host(`torrent.starsystem.dev`)
+      traefik.http.routers.qbittorrent.middlewares: vpn-only@docker
+      traefik.http.services.qbittorrent.loadbalancer.server.port: 8080
     restart: always

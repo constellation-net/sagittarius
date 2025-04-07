@@ -12,9 +12,9 @@ services:
       - /mnt/storage-pool/apps/ollama:/root/.ollama
       - /mnt/storage-pool/apps/openwebui:/app/backend/data
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.ollama.rule=Host(`ollama.starsystem.dev`)
-      - traefik.http.services.ollama.loadbalancer.server.port=8080
+      traefik.enable: true
+      traefik.http.routers.ollama.rule: Host(`ollama.starsystem.dev`)
+      traefik.http.services.ollama.loadbalancer.server.port: 8080
     deploy:
       resources:
         reservations:

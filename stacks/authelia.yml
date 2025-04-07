@@ -20,9 +20,9 @@ services:
     volumes:
       - /mnt/storage-pool/apps/authelia:/config
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.authelia.rule=Host(`login.starsystem.dev`)
-      - traefik.http.services.authelia.loadbalancer.server.port=9091
+      traefik.enable: true
+      traefik.http.routers.authelia.rule: Host(`login.starsystem.dev`)
+      traefik.http.services.authelia.loadbalancer.server.port: 9091
     restart: always
 
   postgres:

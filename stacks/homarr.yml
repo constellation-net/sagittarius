@@ -20,7 +20,7 @@ services:
       - /mnt/storage-pool/apps/homarr:/appdata
       - /var/run/docker.sock:/var/run/docker.sock
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.homarr.rule=Host(`home.starsystem.dev`)
-      - traefik.http.services.homarr.loadbalancer.server.port=7575
+      traefik.enable: true
+      traefik.http.routers.homarr.rule: Host(`home.starsystem.dev`)
+      traefik.http.services.homarr.loadbalancer.server.port: 7575
     restart: always

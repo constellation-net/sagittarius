@@ -16,7 +16,7 @@ services:
       - /mnt/storage-pool/apps/youtrack/conf:/opt/youtrack/conf
       - /mnt/storage-pool/apps/youtrack/backups:/opt/youtrack/backups
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.youtrack.rule=Host(`youtrack.starsystem.dev`)
-      - traefik.http.services.youtrack.loadbalancer.server.port=8080
+      traefik.enable: true
+      traefik.http.routers.youtrack.rule: Host(`youtrack.starsystem.dev`)
+      traefik.http.services.youtrack.loadbalancer.server.port: 8080
     restart: always

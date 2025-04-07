@@ -18,10 +18,10 @@ services:
       - /mnt/storage-pool/media/books:/books
       - /mnt/storage-pool/media/downloads:/downloads
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.readarr.rule=Host(`readarr.starsystem.dev`)
-      - traefik.http.routers.readarr.middlewares=vpn-only@docker
-      - traefik.http.services.readarr.loadbalancer.server.port=8787
+      traefik.enable: true
+      traefik.http.routers.readarr.rule: Host(`readarr.starsystem.dev`)
+      traefik.http.routers.readarr.middlewares: vpn-only@docker
+      traefik.http.services.readarr.loadbalancer.server.port: 8787
     restart: always
 
   exportarr:
@@ -37,5 +37,5 @@ services:
       URL: http://readarr:8787
       APIKEY: ${API_KEY}
     labels:
-      - traefik.enable=false
+      traefik.enable: false
     restart: always

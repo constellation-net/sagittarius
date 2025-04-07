@@ -18,10 +18,10 @@ services:
       - /mnt/storage-pool/media/shows:/tv
       - /mnt/storage-pool/media/downloads:/downloads
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.sonarr.rule=Host(`sonarr.starsystem.dev`)
-      - traefik.http.routers.sonarr.middlewares=vpn-only@docker
-      - traefik.http.services.sonarr.loadbalancer.server.port=8989
+      traefik.enable: true
+      traefik.http.routers.sonarr.rule: Host(`sonarr.starsystem.dev`)
+      traefik.http.routers.sonarr.middlewares: vpn-only@docker
+      traefik.http.services.sonarr.loadbalancer.server.port: 8989
     restart: always
 
   exportarr:
@@ -37,5 +37,5 @@ services:
       URL: http://sonarr:8989
       APIKEY: ${API_KEY}
     labels:
-      - traefik.enable=false
+      traefik.enable: false
     restart: always

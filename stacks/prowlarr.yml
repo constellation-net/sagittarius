@@ -15,10 +15,10 @@ services:
     volumes:
       - /mnt/storage-pool/apps/prowlarr:/config
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.prowlarr.rule=Host(`prowlarr.starsystem.dev`)
-      - traefik.http.routers.prowlarr.middlewares=vpn-only@docker
-      - traefik.http.services.prowlarr.loadbalancer.server.port=9696
+      traefik.enable: true
+      traefik.http.routers.prowlarr.rule: Host(`prowlarr.starsystem.dev`)
+      traefik.http.routers.prowlarr.middlewares: vpn-only@docker
+      traefik.http.services.prowlarr.loadbalancer.server.port: 9696
     restart: always
 
   exportarr:
@@ -34,5 +34,5 @@ services:
       URL: http://prowlarr:9696
       APIKEY: ${API_KEY}
     labels:
-      - traefik.enable=false
+      traefik.enable: false
     restart: always

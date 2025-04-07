@@ -18,10 +18,10 @@ services:
       - /mnt/storage-pool/media/movies:/movies
       - /mnt/storage-pool/media/shows:/tv
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.bazarr.rule=Host(`bazarr.starsystem.dev`)
-      - traefik.http.routers.bazarr.middlewares=vpn-only@docker
-      - traefik.http.services.bazarr.loadbalancer.server.port=6767
+      traefik.enable: true
+      traefik.http.routers.bazarr.rule: Host(`bazarr.starsystem.dev`)
+      traefik.http.routers.bazarr.middlewares: vpn-only@docker
+      traefik.http.services.bazarr.loadbalancer.server.port: 6767
     restart: always
 
   exportarr:
@@ -37,5 +37,5 @@ services:
       URL: http://bazarr:6767
       APIKEY: ${API_KEY}
     labels:
-      - traefik.enable=false
+      traefik.enable: false
     restart: always
