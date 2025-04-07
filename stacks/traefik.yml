@@ -23,6 +23,8 @@ services:
       - all
     security_opt: 
       - no-new-privileges:true
+    labels:
+      traefik.enable: false
 
   traefik:
     container_name: traefik
@@ -103,7 +105,7 @@ services:
       traefik.http.middlewares.authelia.forwardAuth.authResponseHeaders: Remote-User,Remote-Groups,Remote-Email,Remote-Name
       # CORS middleware
       traefik.http.middlewares.cors.headers.accesscontrolallowmethods: GET,POST,PUT,DELETE,OPTIONS,HEAD
-      traefik.http.middlewares.cors.headers.accesscontrolallowheaders: *
+      traefik.http.middlewares.cors.headers.accesscontrolallowheaders: "*"
       traefik.http.middlewares.cors.headers.accesscontrolalloworiginlist: https://home.starsystem.dev,https://games.starsystem.dev
       traefik.http.middlewares.cors.headers.accesscontrolmaxage: 100
       traefik.http.middlewares.cors.headers.accesscontrolallowcredentials: true
