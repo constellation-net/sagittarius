@@ -26,6 +26,14 @@ http:
       middlewares:
         - vpn-only@docker
 
+    proxmox-backup-server:
+      entryPoints:
+        - websecure
+      rule: Host(`backup.proxmox.starsystem.dev`)
+      service: proxmox-backup-server
+      middlewares:
+        - vpn-only@docker
+
     firewall:
       entryPoints:
         - websecure
@@ -74,6 +82,12 @@ http:
         serversTransport: proxmox
         servers:
           - url: https://10.0.0.240:8006
+
+    proxmox-backup-server:
+      loadBalancer:
+        serversTransport: proxmox
+        servers:
+          - url: https://10.0.0.251:8007
 
     com-bluemap:
       loadBalancer:

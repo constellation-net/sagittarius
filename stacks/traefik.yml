@@ -12,7 +12,7 @@ services:
     network_mode: host
     environment:
       CLOUDFLARE_API_TOKEN: ${CLOUDFLARE_API_TOKEN}
-      DOMAINS: "*.starsystem.dev,*.games.starsystem.dev"
+      DOMAINS: "*.starsystem.dev,*.games.starsystem.dev,*.proxmox.starsystem.dev"
       PROXIED: false
       IP6_PROVIDER: none
     restart: always
@@ -70,7 +70,7 @@ services:
       - --entrypoints.websecure.http.middlewares=cors@docker
       - --entrypoints.websecure.http.tls.certresolver=letsencrypt
       - --entrypoints.websecure.http.tls.domains[0].main=starsystem.dev
-      - --entrypoints.websecure.http.tls.domains[0].sans=*.starsystem.dev,*.games.starsystem.dev
+      - --entrypoints.websecure.http.tls.domains[0].sans=*.starsystem.dev,*.games.starsystem.dev,*.proxmox.starsystem.dev
       - --entrypoints.websecure.forwardedheaders.insecure=false
       - --entrypoints.websecure.forwardedheaders.trustedips=10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,fc00::/7
       - --entrypoints.websecure.proxyprotocol.insecure=false
